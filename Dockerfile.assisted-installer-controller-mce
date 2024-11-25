@@ -22,7 +22,7 @@ ARG release=main
 ARG version=latest
 
 RUN PKGS=$(if [ "$(uname -m)" == "s390x" ]; then echo -n 'tar gzip rsync' ; else echo -n 'tar gzip openshift-clients rsync'; fi) && \
-    subscription-manager refresh && microdnf -y install $PKGS && microdnf clean all
+    microdnf -y install subscription-manager && subscription-manager refresh && microdnf -y install $PKGS && microdnf clean all
 
 ENV USER_UID=0
 
