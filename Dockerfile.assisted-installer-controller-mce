@@ -21,6 +21,8 @@ FROM --platform=$BUILDPLATFORM registry.access.redhat.com/ubi9/ubi:9.4
 ARG release=main
 ARG version=latest
 
+RUN dnf install -y ipmitool && dnf clean all
+
 RUN PKGS=$(if [ "$(uname -m)" == "s390x" ]; then echo -n 'tar gzip rsync' ; else echo -n 'tar gzip openshift-clients rsync'; fi) && \
     dnf -y install $PKGS && dnf clean all
 
