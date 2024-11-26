@@ -14,6 +14,10 @@ ENV USER_UID=1001 \
 
 COPY --chown=${USER_UID} . /app
 WORKDIR /app
+
+RUN go install github.com/google/go-licenses@v1.6.0
+RUN ${HOME}/go/bin/go-licenses save --save_path /tmp/licenses ./...
+
 RUN GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -tags strictfipsruntime -o assisted-installer-controller src/main/assisted-installer-controller/assisted_installer_main.go
 
 
@@ -24,13 +28,10 @@ ARG version=latest
 RUN PKGS=$(if [ "$(uname -m)" == "s390x" ]; then echo -n 'tar gzip rsync' ; else echo -n 'tar gzip openshift-clients rsync'; fi) && \
     subscription-manager refresh && dnf -y install $PKGS && dnf clean all
 
-ENV USER_UID=0
-
+COPY --from=builder /tmp/licenses /licenses
 COPY --from=builder /app/assisted-installer-controller /assisted-installer-controller
 
 ENTRYPOINT ["/assisted-installer-controller"]
-
-USER ${USER_UID}
 
 LABEL com.redhat.component="multicluster-engine-assisted-installer-controller-container" \
       name="multicluster-engine/assisted-installer-controller-rhel9" \
