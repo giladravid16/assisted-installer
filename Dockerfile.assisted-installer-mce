@@ -14,6 +14,10 @@ ENV USER_UID=1001 \
 
 COPY --chown=${USER_UID} . /app
 WORKDIR /app
+
+RUN go install github.com/google/go-licenses@v1.6.0
+RUN ${HOME}/go/bin/go-licenses save --save_path /tmp/licenses ./...
+
 RUN CGO_ENABLED=1 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -tags strictfipsruntime -o installer src/main/main.go
 
 
@@ -21,16 +25,13 @@ FROM --platform=$BUILDPLATFORM registry.access.redhat.com/ubi9/ubi:9.4
 ARG release=main
 ARG version=latest
 
-ENV USER_UID=0
-
 RUN subscription-manager refresh && dnf install -y util-linux && dnf clean all
 
+COPY --from=builder /tmp/licenses /licenses
 COPY --from=builder /app/installer /installer
 COPY --from=builder /app/deploy/assisted-installer-controller /assisted-installer-controller/deploy
 
 ENTRYPOINT ["/installer"]
-
-USER ${USER_UID}
 
 LABEL com.redhat.component="multicluster-engine-assisted-installer-container" \
       name="multicluster-engine/assisted-installer-rhel9" \
