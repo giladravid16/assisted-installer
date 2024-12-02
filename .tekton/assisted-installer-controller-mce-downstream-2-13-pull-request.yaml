@@ -8,13 +8,13 @@ metadata:
     build.appstudio.redhat.com/target_branch: '{{target_branch}}'
     pipelinesascode.tekton.dev/max-keep-runs: "3"
     pipelinesascode.tekton.dev/on-cel-expression: event == "pull_request" && target_branch
-      == "master"
+      == "release-ocm-2.13"
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: assisted-installer-mce-downstream-main
-    appstudio.openshift.io/component: assisted-installer-mce-downstream-main
+    appstudio.openshift.io/application: assisted-installer-controller-mce-downstream-2-13
+    appstudio.openshift.io/component: assisted-installer-controller-mce-downstream-2-13
     pipelines.appstudio.openshift.io/type: build
-  name: assisted-installer-mce-downstream-main-on-pull-request
+  name: assisted-installer-controller-mce-downstream-2-13-on-pull-request
   namespace: assisted-installer-tenant
 spec:
   params:
@@ -23,7 +23,7 @@ spec:
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/assisted-installer-tenant/assisted-installer-mce-downstream-main/assisted-installer-mce-downstream-main:on-pr-{{revision}}
+    value: quay.io/redhat-user-workloads/assisted-installer-tenant/assisted-installer-controller-mce-downstream-2-13/assisted-installer-controller-mce-downstream-2-13:on-pr-{{revision}}
   - name: image-expires-after
     value: 5d
   - name: build-platforms
@@ -33,7 +33,7 @@ spec:
     - linux/ppc64le
     - linux/s390x
   - name: dockerfile
-    value: Dockerfile.assisted-installer-mce
+    value: Dockerfile.assisted-installer-controller-mce
   - name: path-context
     value: .
   - name: build-args
