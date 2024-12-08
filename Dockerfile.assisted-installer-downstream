@@ -23,8 +23,8 @@ ARG release=main
 ARG version=latest
 
 COPY --from=builder /tmp/licenses /licenses
-COPY --from=builder /$REMOTE_SOURCE_DIR/app/installer /installer
-COPY --from=builder /$REMOTE_SOURCE_DIR/app/deploy/assisted-installer-controller /assisted-installer-controller/deploy
+COPY --from=builder /app/installer /installer
+COPY --from=builder /app/deploy/assisted-installer-controller /assisted-installer-controller/deploy
 
 RUN subscription-manager refresh && dnf install -y util-linux && dnf clean all
 
