@@ -30,7 +30,7 @@ spec:
     value:
     - linux/x86_64
   - name: dockerfile
-    value: Dockerfile.assisted-installer-controller-mce
+    value: Dockerfile.assisted-installer-controller
   - name: path-context
     value: .
   pipelineSpec:
