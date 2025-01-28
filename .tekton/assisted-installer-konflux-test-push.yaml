@@ -10,7 +10,7 @@ metadata:
       == "konflux-test"
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: assisted-installer-konflux-test
+    appstudio.openshift.io/application: assisted-installer-test
     appstudio.openshift.io/component: assisted-installer-konflux-test
     pipelines.appstudio.openshift.io/type: build
   name: assisted-installer-konflux-test-on-push
@@ -22,7 +22,7 @@ spec:
   - name: revision
     value: '{{revision}}'
   - name: output-image
-    value: quay.io/redhat-user-workloads/rh-ee-gravid-tenant/assisted-installer-konflux-test/assisted-installer-konflux-test:{{revision}}
+    value: quay.io/redhat-user-workloads/rh-ee-gravid-tenant/assisted-installer-test/assisted-installer-konflux-test:{{revision}}
   - name: build-platforms
     value:
     - linux/x86_64
